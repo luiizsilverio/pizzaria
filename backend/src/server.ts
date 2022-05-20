@@ -6,9 +6,13 @@ import { router } from './routes'
 
 const app = express()
 app.use(express.json())
-app.use(cors)
+app.use(cors())
 
 app.use(router)
+
+app.get('/test', (req: Request, res: Response) => {
+    return res.send('Teste')
+})
 
 // Middleware que intercepta os erros
 app.use((
