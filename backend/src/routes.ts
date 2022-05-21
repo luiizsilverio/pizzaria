@@ -1,4 +1,6 @@
 import { Request, Response, Router } from 'express'
+import { AuthUserController } from './controllers/user/AuthUserController'
+import { CreateUserController } from './controllers/user/CreateUserController'
 
 const router = Router()
 
@@ -9,5 +11,8 @@ router.get('/', (req: Request, res: Response) => {
     <h1>
   `)
 })
+
+router.post('/users', new CreateUserController().handle)
+router.post('/session', new AuthUserController().handle)
 
 export { router }
