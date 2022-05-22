@@ -1,4 +1,7 @@
 import { Request, Response, Router } from 'express'
+import multer from 'multer'
+
+import uploadConfig from './config/multer'
 import { CreateCategoryController } from './controllers/category/CreateCategoryController'
 import { ListCategoryController } from './controllers/category/ListCategoryController'
 import { CreateProductController } from './controllers/product/CreateProductController'
@@ -8,6 +11,8 @@ import { DetailUserController } from './controllers/user/DetailUserController'
 import { isAuthenticated } from './middlewares/isAuthenticated'
 
 const router = Router()
+
+const upload = multer(uploadConfig.upload("./temp"))
 
 router.get('/', (req: Request, res: Response) => {
   return res.send(`
@@ -27,6 +32,10 @@ router.post('/categories', isAuthenticated, new CreateCategoryController().handl
 router.get('/categories', isAuthenticated, new ListCategoryController().handle)
 
 // -- ROTAS PRODUCT --
-router.post('/products', isAuthenticated, new CreateProductController().handle)
+router.post('/products',
+  isAuthenticated,
+  upload.single('file'),
+  new CreateProductController().handle
+)
 
 export { router }

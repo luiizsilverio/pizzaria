@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express'
 import 'express-async-errors'
 import cors from 'cors'
 import 'dotenv/config'
+import path from 'path'
 
 import { router } from './routes'
 
@@ -10,6 +11,10 @@ app.use(express.json())
 app.use(cors())
 
 app.use(router)
+
+app.use('/files',
+  express.static(path.resolve(__dirname, '..', 'tmp'))
+)
 
 // Middleware que intercepta os erros
 app.use((
