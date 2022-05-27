@@ -1,8 +1,50 @@
-.container {
-  color: red;
+.containerCenter {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--gray-900);
+}
 
-  h1 {
-    font-size: 50px;
-    color: blue;
+.login {
+  margin-top: 2rem;
+  width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+
+  form {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+
+    h1 {
+      color: var(--white);
+      padding-bottom: 1rem;
+    }
+
+    button {
+      height: 40px;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.text {
+  margin-top: 1rem;
+  color: var(--white);
+  cursor: pointer;
+
+  &:hover {
+    color: lightgoldenrodyellow;
+  }
+}
+
+@media (max-width: 620px) {
+  .login {
+    width: 90%;
   }
 }
