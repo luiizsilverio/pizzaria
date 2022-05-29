@@ -1,6 +1,9 @@
 import Head from "next/head";
 import { FormEvent, useState } from "react";
+import { toast } from "react-toastify";
 import { Header } from "../../components/Header";
+import { setupAPIClient } from "../../services/api";
+import { canSSRAuth } from "../../utils/canSSRAuth";
 import styles from './styles.module.scss'
 
 export default function Category() {
@@ -9,7 +12,15 @@ export default function Category() {
   async function handleRegister(event: FormEvent) {
     event.preventDefault()
 
+    if (!name) return;
 
+    const apiClient = setupAPIClient()
+
+    await apiClient.post('/categories', { name })
+
+    toast.info('Categoria cadastrada com sucesso!')
+
+    setName('')
   }
 
   return (
@@ -39,3 +50,9 @@ export default function Category() {
     </>
   )
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  return {
+    props: {}
+  }
+})
