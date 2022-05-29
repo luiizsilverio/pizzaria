@@ -8,6 +8,7 @@ import styles from '../../styles/Home.module.scss'
 import { Button } from '../components/Button'
 import { Input, TextArea } from '../components/Input'
 import { AuthContext } from '../contexts/AuthContext'
+import { toast } from 'react-toastify'
 
 export default function Home() {
   const { signIn } = useContext(AuthContext)
@@ -18,12 +19,21 @@ export default function Home() {
   async function handleLogin(event: FormEvent) {
     event.preventDefault()
 
+    if (!email || !password) {
+      toast.error("PREENCHA OS DADOS")
+      return
+    }
+
+    setLoading(true)
+
     const data = {
       email,
       password
     }
 
     await signIn(data)
+
+    setLoading(false)
   }
 
   return (
@@ -53,7 +63,7 @@ export default function Home() {
 
             <Button
               type="submit"
-              loading={false}
+              loading={loading}
             >
               Acessar
             </Button>
