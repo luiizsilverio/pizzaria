@@ -1,0 +1,55 @@
+.container {
+  width: 620px;
+  background-color: var(--dark-700);
+
+  h2 {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 360px;
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+
+  strong {
+    color: var(--green-900);
+  }
+}
+
+.description {
+  margin-top: 0.5rem;
+  // se a descrição for muito grande, quebrar a linha
+  word-break: break-all;
+}
+
+.svg {
+  position: absolute;
+  right: 1.2rem;
+  top: 1.2rem;
+}
+
+.button {
+  margin-top: 1.5rem;
+  background-color: rgba(0, 0, 0, 40%);
+  padding: 0.5rem 1rem;
+  border-radius: 0.2rem;
+  color: var(--red-900);
+}
+
+.table {
+  font-size: 1.4rem;
+  color: lightblue;
+}

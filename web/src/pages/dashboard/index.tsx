@@ -30,7 +30,7 @@ export type OrderItemProps = {
     id: string
     name: string
     description: string
-    price: string
+    price: string | number
     banner: string
   }
   order: {
@@ -44,6 +44,7 @@ export type OrderItemProps = {
 Modal.setAppElement('#__next')
 
 export default function Dashboard({ orders }: HomeProps) {
+  const [orderList, setOrderList] = useState(orders || [])
   const [modalItem, setModalItem] = useState<OrderItemProps[]>()
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -64,6 +65,27 @@ export default function Dashboard({ orders }: HomeProps) {
     setModalVisible(true)
   }
 
+  async function handleFinishModal(id: string) {
+    const api = setupAPIClient()
+
+    await api.put('/orders/finish', {
+      order_id: id
+    })
+
+    const response = await api.get('/orders')
+
+    setOrderList(response.data)
+    setModalVisible(false)
+  }
+
+  async function handleRefresh() {
+    const api = setupAPIClient()
+
+    const response = await api.get('/orders')
+
+    setOrderList(response.data)
+  }
+
   return (
     <>
       <Head>
@@ -75,14 +97,22 @@ export default function Dashboard({ orders }: HomeProps) {
       <main className={styles.container}>
         <div className={styles.header}>
           <h1>Últimos pedidos</h1>
-          <button>
+          <button onClick={handleRefresh}>
             <FiRefreshCcw color="#3fffa3" />
           </button>
         </div>
 
         <article className={styles.listOrders}>
+
         {
-          orders.map((item) => (
+          orderList.length === 0 && (
+            <span className={styles.emptyList}>
+              Nenhum pedido aberto foi encontrado.
+            </span>
+          )
+        }
+        {
+          orderList.map((item) => (
             <section className={styles.orderItem} key={ item.id }>
               <button onClick={() => handleOpenModal(item.id)}>
                 <div className={styles.tag}></div>
@@ -97,7 +127,12 @@ export default function Dashboard({ orders }: HomeProps) {
 
       {
         modalVisible && (
-          <ModalOrder />
+          <ModalOrder
+            isOpen={modalVisible}
+            order={modalItem}
+            onClose={handleCloseModal}
+            onFinish={handleFinishModal}
+          />
         )
       }
     </>
