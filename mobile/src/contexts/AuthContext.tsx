@@ -6,6 +6,9 @@ type AuthContextData = {
   user: UserProps
   isAuthenticated: boolean
   signIn: (credentials: SignInProps) => Promise<void>
+  signOut: () => Promise<void>
+  loadingAuth: boolean
+  loading: boolean
 }
 
 type UserProps = {
@@ -34,12 +37,14 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     token: ''
   })
 
-  const [loading, setLoading] = useState(false)
+  const [loadingAuth, setLoadingAuth] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const isAuthenticated = !!user.name
 
+
   async function signIn({ email, password }: SignInProps) {
-    setLoading(true)
+    setLoadingAuth(true)
 
     try {
       const response = await api.post('/session', {
@@ -48,6 +53,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       })
 
       const { id, name, token } = response.data
+      // console.log(response.data)
 
       // persiste os dados do usuário no AsyncStorage
       await AsyncStorage.setItem('@pizzaria.user', JSON.stringify(response.data))
@@ -62,13 +68,26 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         token
       })
 
-      setLoading(false)
+      setLoadingAuth(false)
 
     } catch(err) {
       console.log('Erro ao acessar', err)
-      setLoading(false)
+      setLoadingAuth(false)
     }
   }
+
+
+  async function signOut() {
+    await AsyncStorage.clear()
+
+    setUser({
+      id: '',
+      name: '',
+      email: '',
+      token: ''
+    })
+  }
+
 
   useEffect(() => {
     async function getUser() {
@@ -86,14 +105,25 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           token: hasUser.token
         })
       }
+
+      setLoading(false)
     }
 
     getUser()
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider value={{
+      user,
+      isAuthenticated,
+      signIn,
+      signOut,
+      loading,
+      loadingAuth
+    }}>
+
       {children}
+
     </AuthContext.Provider>
   )
 }
