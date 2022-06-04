@@ -5,7 +5,8 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from "react-native";
 
 import { useNavigation } from '@react-navigation/native'
@@ -13,6 +14,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { StackParamsList } from "../../routes/app.routes";
+import { api } from "../../services/api";
 
 export default function Dashboard() {
   const [table, setTable] = useState('')
@@ -21,10 +23,19 @@ export default function Dashboard() {
 
   async function openOrder() {
     if (!table) return;
+    if (isNaN(parseInt(table))) {
+      Alert.alert("Informe o Nº da mesa")
+    }
 
-    navigation.navigate('Order', { table, order_id: '23542345' })
+    const response = await api.post('orders', {
+      table: Number(table)
+    })
 
+    setTable('')
+
+    navigation.navigate('Order', { table, order_id: response.data.id })
   }
+
 
   return (
     <SafeAreaView style={styles.container}>
