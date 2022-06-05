@@ -10,11 +10,13 @@ import {
 
 import React, { useEffect, useState } from 'react'
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Feather } from '@expo/vector-icons'
 
 import { api } from '../../services/api'
 import ModalPicker from '../../components/ModalPicker'
 import ListItem from '../../components/ListItem'
+import { StackParamsList } from '../../routes/app.routes'
 
 type RouteParams = {
   Order: {
@@ -44,7 +46,7 @@ type ItemProps = {
 
 export default function Order() {
   const route = useRoute<OrderRouteProps>()
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>()
 
   const [categories, setCategories] = useState<CategoryProps[] | []>([])
   const [category, setCategory] = useState<CategoryProps | undefined>()
@@ -112,6 +114,14 @@ export default function Order() {
     const lista = items.filter(item => item.id !== item_id)
 
     setItems(lista)
+  }
+
+
+  function handleFinishOrder() {
+    navigation.navigate("Finish", {
+      table: route.params?.table,
+      order_id: route.params?.order_id
+    })
   }
 
 
@@ -208,6 +218,7 @@ export default function Order() {
         <TouchableOpacity
           style={[styles.btn, { opacity: items.length === 0 ? 0.3 : 1 }]}
           disabled={items.length === 0}
+          onPress={handleFinishOrder}
         >
           <Text style={styles.btnText}>Avançar</Text>
         </TouchableOpacity>
