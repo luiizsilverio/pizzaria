@@ -11,9 +11,8 @@
 ## Sobre a aplicação
 Aplicação completa para pizzaria desenvolvida em 3 camadas, durante o curso [Projeto Completo NodeJS, React, React Native, TypeScript](https://www.udemy.com/course/dev-fullstack/), do prof. Matheus Fraga.<br />
 1. __Back-end__: Desenvolvido em Node.JS com Typescript, utilizando Prisma com banco de dados PostgreSQL.
-2. __Front-end__: Desenvolvido em React com Next, Typescript e SASS.
-3. __Mobile__: Desenvolvido em React Native com Expo e Typescript.
-<br />
+2. __Front-end__: Permite cadastrar produtos, categorias e fechar mesas. Desenvolvido em React com Next, Typescript e SASS.
+3. __Mobile__: Permite lançar o consumo das mesas. Desenvolvido em React Native com Expo e Typescript.
 
 ## :hammer_and_wrench: Tecnologias
 * Back-end
@@ -66,7 +65,7 @@ $ expo start
 ```
 
 ## :camera_flash: Screenshots
-![](https://github.com/luiizsilverio/nlw-widget/blob/main/src/assets/aaa.gif)
+![](https://github.com/luiizsilverio/pizzaria/blob/main/web/src/assets/pizza-web.gif)
 
 ## :balance_scale: Licença
 Este projeto está licenciado sob a [licença MIT](LICENSE).
